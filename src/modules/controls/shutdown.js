@@ -1,4 +1,5 @@
 const shell = require("shelljs");
+const bot = require("../../bot/bot");
 
 module.exports = {
   async shutdown() {
