@@ -1,6 +1,6 @@
-const { checkCpuLoad } = require("./modules/health-checkers/checkCpuLoad");
-const { checkDiskSpaceAndMemory } = require("./modules/health-checkers/checkDiskSpaceAndMemory");
-const { checkTemperature } = require("./modules/health-checkers/checkTemperature");
+const { checkCpuLoad } = require("./modules/monitoring/health-checkers/cpuLoad.checker");
+const { checkDiskSpaceAndMemory } = require("./modules/monitoring/health-checkers/diskSpaceAndMemory.checker");
+const { checkTemperature } = require("./modules/monitoring/health-checkers/temperature.checker");
 const { runBot } = require("./modules/runBot");
 
 runBot();

@@ -1,4 +1,4 @@
-const bot = require("../../bot");
+const bot = require("../../../bot/bot");
 const si = require("systeminformation");
 
 module.exports = {

@@ -1,5 +1,5 @@
 const si = require("systeminformation");
-const bot = require("../bot"); // assuming your bot is set up in ../bot
+const bot = require("../../bot/bot");
 
 module.exports = {
   async getDockerStatus(chatId) {

@@ -1,8 +1,6 @@
 const si = require("systeminformation");
-const bot = require("../../bot");
+const bot = require("../../../bot/bot");
 const os = require("os");
-
-
 
 module.exports = {
   async checkDiskSpaceAndMemory(chatId) {

@@ -1,6 +1,6 @@
 const si = require("systeminformation");
-const bot = require("../bot");
 const os = require("os");
+const bot = require("../../bot/bot");
 
 module.exports = {
   async getSystemStatus(chatId) {
