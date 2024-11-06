@@ -1,4 +1,5 @@
 const bot = require("../../bot");
+const si = require("systeminformation");
 
 module.exports = {
   async checkCpuLoad(chatId) {
