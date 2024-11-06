@@ -10,8 +10,8 @@ module.exports = {
       const uptime = await si.time();
 
       const disk = await si.fsSize();
-      const diskFree = disk[0].available / 1024 / 1024 / 1024;
-      const diskTotal = disk[0].size / 1024 / 1024 / 1024;
+      const diskFree = disk[1].available / 1024 / 1024 / 1024;
+      const diskTotal = disk[1].size / 1024 / 1024 / 1024;
       const networkStats = await si.networkStats();
 
       const totalMemory = os.totalmem();
