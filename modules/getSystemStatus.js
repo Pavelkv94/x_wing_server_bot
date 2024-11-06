@@ -1,28 +1,17 @@
 const si = require("systeminformation");
 const bot = require("../bot");
-const os = require('os');
-const fs = require('fs');
-const path = require('path');
+const os = require("os");
 
 module.exports = {
   async getSystemStatus(chatId) {
     try {
-      
       const cpuTemperature = await si.cpuTemperature();
       const cpuLoad = await si.currentLoad();
       const uptime = await si.time();
 
-      const drive = path.parse(os.homedir()).root;
-
-      fs.statvfs(drive, (err, stats) => {
-        if (err) {
-          console.error('Error fetching disk space info:', err);
-      return;
-      }
-        
-      const totalSpace = stats.blocks * stats.bsize / (1024 * 1024 * 1024);
-      const freeSpace = stats.bfree * stats.bsize / (1024 * 1024 * 1024);
-      
+      const disk = await si.fsSize();
+      const diskFree = disk[0].available / 1024 / 1024 / 1024;
+      const diskTotal = disk[0].size / 1024 / 1024 / 1024;
       const networkStats = await si.networkStats();
 
       const totalMemory = os.totalmem();
@@ -55,7 +44,7 @@ CPU Load: ${cpuLoad.currentLoad.toFixed(2)}%
 Memory Used(RAM): ${usedMemoryMB}/${totalMemoryMB} GB
 Memory Free(RAM): ${freeMemoryMB}/${totalMemoryMB} GB
 
-Disk Space: ${totalSpace} GB free / ${freeSpace} GB total
+Disk Space: ${diskFree.toFixed(2)} GB free / ${diskTotal.toFixed(2)} GB total
 
 ${networkInfo}
 
