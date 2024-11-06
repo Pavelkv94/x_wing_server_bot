@@ -1,11 +1,14 @@
 const si = require("systeminformation");
 const bot = require("../../bot");
+const os = require("os");
+
+
 
 module.exports = {
   async checkDiskSpaceAndMemory(chatId) {
     try {
       const diskData = await si.fsSize();
-      const diskInfo = diskData[0];
+      const diskInfo = diskData[1];
 
       const freeDiskPercentage = (diskInfo.available / diskInfo.size) * 100;
 
@@ -19,8 +22,14 @@ module.exports = {
       }
 
       // Check RAM
-      const memData = await si.mem();
-      const freeMemPercentage = (memData.available / memData.total) * 100;
+
+      const totalMemory = os.totalmem();
+      const freeMemory = os.freemem();
+
+      const totalMemoryMB = (totalMemory / 1024 ** 3).toFixed(2);
+      const freeMemoryMB = (freeMemory / 1024 ** 3).toFixed(2);
+
+      const freeMemPercentage = (freeMemoryMB / totalMemoryMB) * 100;
 
       if (freeMemPercentage < 20 && freeMemPercentage >= 10) {
         await bot.sendMessage(chatId, `⚠️ Warning: Low memory! Only ${freeMemPercentage.toFixed(2)}% of RAM available.`);
