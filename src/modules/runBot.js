@@ -7,7 +7,7 @@ const _handleStartCommand = async (chatId) => {
   if (chatId === +process.env.TG_USER_CHAT_ID) {
     await bot.sendMessage(chatId, "What does my lord desire?", {
       reply_markup: {
-        keyboard: [["Get System Info", "Get Docker Info", "🔄 Reload bot"], ["Test"]],
+        keyboard: [["📊 Get System Info", "🐋 Get Docker Info", "🔄 Reload bot"], ["⭕️ Shutdown"]],
         resize_keyboard: true,
       },
     });
@@ -21,7 +21,6 @@ const _showInlineKeyboard = async (chatId) => {
     reply_markup: {
       resize_keyboard: true,
       one_time_keyboard: true,
-
       inline_keyboard: [
         [
           { text: "🔻Yes", callback_data: "shutdown" },
@@ -46,7 +45,7 @@ module.exports = {
           await _handleStartCommand(chatId);
         } else if (text === "📊 Get System Info") {
           await getSystemStatus(chatId);
-        } else if (text === "🐋Get Docker Info") {
+        } else if (text === "🐋 Get Docker Info") {
           await getDockerStatus(chatId);
         } else if (text === "⭕️ Shutdown") {
           await _showInlineKeyboard(chatId);
