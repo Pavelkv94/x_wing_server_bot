@@ -12,6 +12,7 @@ module.exports = {
 
           return `
 Stats for 🔷${container.name}🔷:
+Status: ${container.state}
 CPU: ${stats[0].cpuPercent.toFixed(2)}%
 Memory Usage: ${(stats[0].memUsage / 1024 ** 2).toFixed(2)} MB
 Memory Limit: ${(stats[0].memLimit / 1024 ** 2).toFixed(2)} MB
