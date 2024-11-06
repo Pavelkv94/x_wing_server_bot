@@ -10,7 +10,6 @@ module.exports = {
         containers.map(async (container) => {
           const stats = await si.dockerContainerStats(container.id);
 
-          console.log(stats);
           return `
 Stats for 🔷${container.name}🔷:
 CPU: ${stats[0].cpuPercent.toFixed(2)}%
