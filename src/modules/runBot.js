@@ -1,29 +1,28 @@
 const { getSystemStatus } = require("./monitoring/getSystemStatus");
 const { getDockerStatus } = require("./monitoring/getDockerStatus");
 const bot = require("../bot/bot");
-const { shutdown } = require("./controls/shutdown");
+const { shutdown, reboot } = require("./controls/shutdown");
 
 const _handleStartCommand = async (chatId) => {
-  if (chatId === +process.env.TG_USER_CHAT_ID) {
-    await bot.sendMessage(chatId, "What does my lord desire?", {
-      reply_markup: {
-        keyboard: [["📊 Get System Info", "🐋 Get Docker Info", "🔄 Reload bot"], ["⭕️ Shutdown"]],
-        resize_keyboard: true,
-      },
-    });
-  } else {
-    await bot.sendMessage(chatId, "Access Forbidden. 😨");
-  }
+  await bot.sendMessage(chatId, "What does my lord desire?", {
+    reply_markup: {
+      keyboard: [
+        ["📊 Get System Info", "🐋 Get Docker Info", "🔄 Reload bot"],
+        ["🛑 Shutdown", "⭕️ Reboot"],
+      ],
+      resize_keyboard: true,
+    },
+  });
 };
 
-const _showInlineKeyboard = async (chatId) => {
-  await bot.sendMessage(chatId, "Are you sure you want to shut down the server?", {
+const _showInlineKeyboard = async (chatId, command) => {
+  await bot.sendMessage(chatId, `Are you sure you want to ${command} the server?`, {
     reply_markup: {
       resize_keyboard: true,
       one_time_keyboard: true,
       inline_keyboard: [
         [
-          { text: "🔻Yes", callback_data: "shutdown" },
+          { text: "🔻Yes", callback_data: command },
           { text: "🟩 No", callback_data: "deleteMessage" },
         ],
       ],
@@ -39,7 +38,9 @@ module.exports = {
       const chatId = msg.chat.id;
 
       try {
-        if (text === "/start") {
+        if (chatId !== +process.env.TG_USER_CHAT_ID) {
+          await bot.sendMessage(chatId, "Access Forbidden. 😨");
+        } else if (text === "/start") {
           await _handleStartCommand(chatId);
         } else if (text === "🔄 Reload bot") {
           await _handleStartCommand(chatId);
@@ -47,8 +48,10 @@ module.exports = {
           await getSystemStatus(chatId);
         } else if (text === "🐋 Get Docker Info") {
           await getDockerStatus(chatId);
-        } else if (text === "⭕️ Shutdown") {
-          await _showInlineKeyboard(chatId);
+        } else if (text === "🛑 Shutdown") {
+          await _showInlineKeyboard(chatId, "shut down");
+        } else if (text === "⭕️ Reboot") {
+          await _showInlineKeyboard(chatId, "reboot");
         }
       } catch (e) {
         console.log(e);
@@ -60,8 +63,15 @@ module.exports = {
       const chatId = callbackQuery.message.chat.id;
       const data = callbackQuery.data;
 
-      if (data === "shutdown") {
+      if (data === "shut down") {
         await shutdown(chatId);
+        await bot.deleteMessage(chatId, callbackQuery.message.message_id);
+      } else if (data === "deleteMessage") {
+        await bot.deleteMessage(chatId, callbackQuery.message.message_id);
+      }
+
+      if (data === "reboot") {
+        await reboot(chatId);
         await bot.deleteMessage(chatId, callbackQuery.message.message_id);
       } else if (data === "deleteMessage") {
         await bot.deleteMessage(chatId, callbackQuery.message.message_id);

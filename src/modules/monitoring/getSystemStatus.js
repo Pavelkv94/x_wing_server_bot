@@ -25,8 +25,8 @@ module.exports = {
 
       const networkInfo = networkStats
         .map((net) => {
-          const rxMB = (net.rx_sec / 1024 / 1024).toFixed(2); // Received data in MB/sec
-          const txMB = (net.tx_sec / 1024 / 1024).toFixed(2); // Transmitted data in MB/sec
+          const rxMB = (net.rx_sec / 1024 / 1024).toFixed(2); 
+          const txMB = (net.tx_sec / 1024 / 1024).toFixed(2); 
           return `Network (${net.iface}) - Rx: ${rxMB} MB/sec, Tx: ${txMB} MB/sec\n`;
         })
         .join("");

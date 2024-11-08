@@ -4,7 +4,7 @@ const bot = require("../../bot/bot");
 module.exports = {
   async getDockerStatus(chatId) {
     try {
-      const containers = await si.dockerContainers();
+      const containers = await si.dockerContainers({ all: true });
 
       const containersInfo = await Promise.all(
         containers.map(async (container) => {
