@@ -7,13 +7,17 @@ const _handleStartCommand = async (chatId) => {
   await bot.sendMessage(chatId, "What does my lord desire?", {
     reply_markup: {
       keyboard: [
-        ["📊 Get System Info", "🐋 Get Docker Info", "🔄 Reload bot"],
+        ["📊 Get System Info", "🐋 Get Docker Info", "🌀 Homepage"],
         ["🛑 Shutdown", "⭕️ Reboot"],
       ],
       resize_keyboard: true,
     },
   });
 };
+
+const sendHomepageLink = async (chatId) => {
+  await bot.sendMessage(chatId, `${process.env.HOMEPAGE_URL}`);
+}
 
 const _showInlineKeyboard = async (chatId, command) => {
   await bot.sendMessage(chatId, `Are you sure you want to ${command} the server?`, {
@@ -42,8 +46,8 @@ module.exports = {
           await bot.sendMessage(chatId, "Access Forbidden. 😨");
         } else if (text === "/start") {
           await _handleStartCommand(chatId);
-        } else if (text === "🔄 Reload bot") {
-          await _handleStartCommand(chatId);
+        } else if (text === "🌀 Homepage") {
+          await sendHomepageLink(chatId);
         } else if (text === "📊 Get System Info") {
           await getSystemStatus(chatId);
         } else if (text === "🐋 Get Docker Info") {
