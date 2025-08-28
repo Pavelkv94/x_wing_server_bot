@@ -1,13 +1,13 @@
 const { checkCpuLoad } = require("./modules/monitoring/health-checkers/cpuLoad.checker");
 const { checkDiskSpaceAndMemory } = require("./modules/monitoring/health-checkers/diskSpaceAndMemory.checker");
 const { checkTemperature } = require("./modules/monitoring/health-checkers/temperature.checker");
-const { runBot } = require("./modules/runBot");
+const { runBot } = require("./runBot");
 
 runBot();
 
 const intervalId = setInterval(() => {
   try {
-    console.log("timer");
+    console.log("health check");
     checkCpuLoad(process.env.TG_USER_CHAT_ID);
     checkDiskSpaceAndMemory(process.env.TG_USER_CHAT_ID);
     checkTemperature(process.env.TG_USER_CHAT_ID);

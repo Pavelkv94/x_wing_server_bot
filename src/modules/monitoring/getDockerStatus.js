@@ -11,14 +11,11 @@ module.exports = {
           const stats = await si.dockerContainerStats(container.id);
 
           return `
-Stats for 🔷${container.name}🔷:
+🔷${container.name}🔷:
 Status: ${container.state}
 CPU: ${stats[0].cpuPercent.toFixed(2)}%
 Memory Usage: ${(stats[0].memUsage / 1024 ** 2).toFixed(2)} MB
-Memory Limit: ${(stats[0].memLimit / 1024 ** 2).toFixed(2)} MB
-Network received: ${(stats[0].netIO.rx / 1024 ** 2).toFixed(2)} MB
-Network sent: ${(stats[0].netIO.wx / 1024 ** 2).toFixed(2)} MB
-          `;
+Memory Limit: ${(stats[0].memLimit / 1024 ** 2).toFixed(2)} MB`;
         })
       );
 
