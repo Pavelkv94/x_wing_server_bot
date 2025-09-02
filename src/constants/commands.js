@@ -5,4 +5,6 @@ module.exports = {
   LOGS: "🗂 Get Logs",
   SHUTDOWN: "🛑 Shutdown",
   REBOOT: "⭕️ Reboot",
+  HOMEPAGE: "🏠 Homepage",
+  POWER: "🔌 Power",
 };

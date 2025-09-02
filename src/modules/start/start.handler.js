@@ -7,7 +7,7 @@ module.exports = {
       reply_markup: {
         keyboard: [
           [COMMANDS.SYSTEM_INFO, COMMANDS.DOCKER_INFO, COMMANDS.LOGS],
-          [COMMANDS.SHUTDOWN, COMMANDS.REBOOT],
+          [COMMANDS.HOMEPAGE, COMMANDS.POWER],
         ],
         resize_keyboard: true,
       },

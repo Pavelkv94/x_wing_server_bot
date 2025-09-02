@@ -9,7 +9,11 @@ const { _showInlineKeyboardForGetLogs } = require("./modules/logs/logs.handler")
 const { _handleStartCommand } = require("./modules/start/start.handler");
 const INTERVALS = require("./constants/interval");
 const { getLogs } = require("./modules/logs/getLogs");
+const { _showInlineKeyboardForPower } = require("./modules/power/power.handler");
 
+const sendHomepageLink = async (chatId) => {
+  await bot.sendMessage(chatId, `${process.env.HOMEPAGE_URL}`);
+}
 
 module.exports = {
   async runBot() {
@@ -29,6 +33,11 @@ module.exports = {
           await getSystemStatus(chatId);
         } else if (text === COMMANDS.DOCKER_INFO) {
           await getDockerStatus(chatId);
+        }
+        else if (text === COMMANDS.HOMEPAGE) {
+          await sendHomepageLink(chatId);
+        } else if (text === COMMANDS.POWER) {
+          await _showInlineKeyboardForPower(chatId);
         } else if (text === COMMANDS.SHUTDOWN) {
           await _showInlineKeyboardForShutDown(chatId, CALLBACKS.SHUTDOWN);
         } else if (text === COMMANDS.REBOOT) {
@@ -44,14 +53,16 @@ module.exports = {
       const chatId = callbackQuery.message.chat.id;
       const data = callbackQuery.data;
 
-      if (data === CALLBACKS.SHUTDOWN) {
+      if (data === CALLBACKS.SHUTDOWN_CONFIRM) {
+        await bot.deleteMessage(chatId, callbackQuery.message.message_id);
+        await _showInlineKeyboardForShutDown(chatId, CALLBACKS.SHUTDOWN);
+      } else if (data === CALLBACKS.REBOOT_CONFIRM) {
+        await bot.deleteMessage(chatId, callbackQuery.message.message_id);
+        await _showInlineKeyboardForShutDown(chatId, CALLBACKS.REBOOT);
+      } else if (data === CALLBACKS.SHUTDOWN) {
         await shutdown(chatId);
         await bot.deleteMessage(chatId, callbackQuery.message.message_id);
-      } else if (data === CALLBACKS.DELETE_MESSAGE) {
-        await bot.deleteMessage(chatId, callbackQuery.message.message_id);
-      }
-
-      if (data === CALLBACKS.REBOOT) {
+      } else if (data === CALLBACKS.REBOOT) {
         await reboot(chatId);
         await bot.deleteMessage(chatId, callbackQuery.message.message_id);
       } else if (data === CALLBACKS.DELETE_MESSAGE) {
